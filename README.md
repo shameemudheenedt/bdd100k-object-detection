@@ -1,2 +1,2 @@
 # bdd100k-object-detection
-End to End Data Science Project Implimentation
+End-to-end object detection pipeline on BDD100K dataset with YOLOv5 - Fully Dockerized
