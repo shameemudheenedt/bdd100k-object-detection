@@ -1,0 +1,26 @@
+TRAIN SET - Objects per Image by Class:
+==================================================
+traffic light: mean=4.74, median=4.00, std=3.07
+traffic sign: mean=4.19, median=3.00, std=3.08
+car: mean=10.33, median=9.00, std=6.06
+person: mean=4.14, median=2.00, std=4.78
+bus: mean=1.30, median=1.00, std=0.67
+truck: mean=1.59, median=1.00, std=1.03
+rider: mean=1.26, median=1.00, std=0.69
+bike: mean=1.66, median=1.00, std=1.61
+motor: mean=1.31, median=1.00, std=1.00
+train: mean=1.30, median=1.00, std=1.15
+
+
+VAL SET - Objects per Image by Class:
+==================================================
+traffic sign: mean=4.25, median=4.00, std=3.09
+traffic light: mean=4.76, median=4.00, std=3.11
+car: mean=10.38, median=9.00, std=6.04
+rider: mean=1.26, median=1.00, std=0.64
+motor: mean=1.35, median=1.00, std=1.18
+person: mean=4.12, median=2.00, std=4.61
+bus: mean=1.29, median=1.00, std=0.66
+truck: mean=1.58, median=1.00, std=1.00
+bike: mean=1.74, median=1.00, std=1.90
+train: mean=1.07, median=1.00, std=0.26

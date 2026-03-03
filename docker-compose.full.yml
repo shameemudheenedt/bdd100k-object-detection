@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  # Task 1: Data Analysis
+  data-analysis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bdd100k-analysis
+    volumes:
+      - ./data:/app/data
+      - ./analysis_output:/app/analysis_output
+    environment:
+      - DATA_DIR=/app/data
+    command: python data_analysis.py
+    
+  # Task 1: Interactive Dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bdd100k-dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./analysis_output:/app/analysis_output
+    environment:
+      - DATA_DIR=/app/data
+    command: streamlit run dashboard.py --server.address=0.0.0.0
+    
+  # Task 2: Model Pipeline (Data Preparation)
+  model-prepare:
+    build:
+      context: .
+      dockerfile: Dockerfile.full
+    container_name: bdd100k-model-prepare
+    volumes:
+      - ./data:/app/data
+      - ./bdd100k_yolo:/app/bdd100k_yolo
+      - ./yolov5s_bdd100k:/app/yolov5s_bdd100k
+    environment:
+      - DATA_DIR=/app/data
+    command: python model_pipeline.py --task prepare
+    
+  # Task 2: Model Training (requires GPU)
+  model-train:
+    build:
+      context: .
+      dockerfile: Dockerfile.full
+    container_name: bdd100k-model-train
+    volumes:
+      - ./data:/app/data
+      - ./bdd100k_yolo:/app/bdd100k_yolo
+      - ./yolov5s_bdd100k:/app/yolov5s_bdd100k
+      - ./runs:/app/runs
+    environment:
+      - DATA_DIR=/app/data
+    command: bash -c "python fix_yolov5_pytorch26.py && python model_pipeline.py --task train --epochs 1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+  # Task 3: Model Evaluation
+  model-eval:
+    build:
+      context: .
+      dockerfile: Dockerfile.full
+    container_name: bdd100k-model-eval
+    volumes:
+      - ./data:/app/data
+      - ./bdd100k_yolo:/app/bdd100k_yolo
+      - ./yolov5s_bdd100k:/app/yolov5s_bdd100k
+      - ./evaluation_output:/app/evaluation_output
+      - ./visualizations:/app/visualizations
+    environment:
+      - DATA_DIR=/app/data
+    command: bash -c "python evaluation.py"
+    
+  # Task 3: Model Inference on Test Set
+  model-inference:
+    build:
+      context: .
+      dockerfile: Dockerfile.full
+    container_name: bdd100k-model-inference
+    volumes:
+      - ./data:/app/data
+      - ./yolov5s_bdd100k:/app/yolov5s_bdd100k
+      - ./high_conf_output:/app/high_conf_output
+    environment:
+      - DATA_DIR=/app/data
+    command: python inference.py --weights yolov5s_bdd100k/weights/yolov5s.pt --source /app/data/bdd100k_images_100k/bdd100k/images/100k/test --output high_conf_predictions.json --save-img --output-dir high_conf_output --conf 0.5

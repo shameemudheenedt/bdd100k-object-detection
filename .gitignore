@@ -1,0 +1,59 @@
+# Dataset (too large for GitHub)
+data/
+*.jpg
+*.jpeg
+*.png
+*.json
+
+# Model weights
+*.pt
+*.pth
+*.weights
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs (optional - keep CSVs but exclude images)
+analysis_output/*.png
+evaluation_output/
+visualizations/
+high_conf_output/
+runs/
+
+# Docker
+.dockerignore
+
+# Logs
+*.log
+training_test.log
+training_full.log
+
+# Cache
+*.cache
+.cache/
+
+# Large directories
+bdd100k_yolo/images/
+bdd100k_yolo/labels/
+yolov5s_bdd100k/runs/

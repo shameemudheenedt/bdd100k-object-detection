@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  data-analysis:
+    build: .
+    container_name: bdd100k-analysis
+    volumes:
+      - ./data:/app/data
+      - ./analysis_output:/app/analysis_output
+    command: python data_analysis.py
+    
+  dashboard:
+    build: .
+    container_name: bdd100k-dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./analysis_output:/app/analysis_output
+    command: streamlit run dashboard.py --server.address=0.0.0.0
+    depends_on:
+      - data-analysis

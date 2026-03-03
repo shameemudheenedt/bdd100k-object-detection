@@ -1,0 +1,3 @@
+Split,Mean_Objects,Median_Objects,Std_Objects,Max_Objects,Min_Objects
+Train,18.4199218470435,17.0,9.619009248213324,91,3
+Val,18.5526,17.0,9.59558404892584,66,3
